@@ -20,9 +20,9 @@ const fun = async () => {
     await client.connect();
     const servicesCategories = client.db("photoGrapher-services").collection("categories");
     app.get("/services", async (req, res) => {
+        const showLimit = parseInt(req.query.limit);
         const curser = servicesCategories.find({});
-        const categories = await curser.toArray();
-        console.log(categories);
+        const categories = await curser.limit(showLimit).toArray();
         res.send(categories);
     });
 };
