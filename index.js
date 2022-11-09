@@ -46,39 +46,56 @@ const fun = async () => {
         }
     });
 
-    const feedbackes = client.db("photoGrapher-services").collection("feedbackes");
+    const reviews = client.db("photoGrapher-services").collection("reviews");
     // Update Review
-    app.post("/feedbackes", async (req, res) => {
-        const result = await feedbackes.insertOne(req.body);
+    app.post("/reviews", async (req, res) => {
+        const result = await reviews.insertOne(req.body);
         if (result.insertedId) {
             res.send({
                 success: true,
-                message: "Feedback Updated",
+                message: "review Updated",
             });
         }
     });
-    app.get("/feedback/:id", async (req, res) => {
+    app.get("/review/:id", async (req, res) => {
         const id = req.params.id;
         const query = { serviceId: id };
-        const curser = feedbackes.find(query);
-        const thisFeedbackes = await curser.toArray();
-        res.send(thisFeedbackes);
+        const curser = reviews.find(query);
+        const thisreviews = await curser.toArray();
+        res.send(thisreviews);
     });
     // Get Product by email
-    app.get("/feedbacksbyemail", async (req, res) => {
+    app.get("/reviewsbyemail", async (req, res) => {
         const email = req.query.email;
-        const curser = feedbackes.find({ email });
-        const feedbackesbyemail = await curser.toArray();
-        res.send(feedbackesbyemail);
+        const curser = reviews.find({ email });
+        const reviewsbyemail = await curser.toArray();
+        res.send(reviewsbyemail);
     });
-    // Delete Feedback
-    app.delete("/feedbackdelete/:id", async (req, res) => {
+    // Delete review
+    app.delete("/reviewdelete/:id", async (req, res) => {
         const { id } = req.params;
-        const result = await feedbackes.deleteOne({ _id: ObjectId(id) });
+        const result = await reviews.deleteOne({ _id: ObjectId(id) });
         if (result.deletedCount) {
             res.send({
                 success: true,
-                message: "Successfully deleted Feedback",
+                message: "Successfully deleted review",
+            });
+        }
+    });
+    // Edit Review
+    app.get("/reviewbyid/:id", async (req, res) => {
+        const { id } = req.params;
+        const query = { _id: ObjectId(id) };
+        const review = await reviews.findOne(query);
+        res.send(review);
+    });
+    app.patch("/reviewedit/:id", async (req, res) => {
+        const { id } = req.params;
+        const result = await reviews.updateOne({ _id: ObjectId(id) }, { $set: req.body });
+        if (result.matchedCount) {
+            res.send({
+                success: true,
+                message: "Successfully Updated Review",
             });
         }
     });
