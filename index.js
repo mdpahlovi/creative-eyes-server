@@ -37,24 +37,11 @@ const fun = async () => {
     });
     // New Service Added
     app.post("/services", async (req, res) => {
-        try {
-            const result = await servicesCategories.insertOne(req.body);
-            if (result.insertedId) {
-                res.send({
-                    success: true,
-                    message: "New services Added",
-                });
-            } else {
-                res.send({
-                    success: false,
-                    error: "Couldn't create service",
-                });
-            }
-        } catch (error) {
-            console.log(error.name.bgRed.bold, error.message.red);
+        const result = await servicesCategories.insertOne(req.body);
+        if (result.insertedId) {
             res.send({
-                success: false,
-                error: error.message,
+                success: true,
+                message: "New services Added",
             });
         }
     });
@@ -62,24 +49,11 @@ const fun = async () => {
     const feedbackes = client.db("photoGrapher-services").collection("feedbackes");
     // Update Review
     app.post("/feedbackes", async (req, res) => {
-        try {
-            const result = await feedbackes.insertOne(req.body);
-            if (result.insertedId) {
-                res.send({
-                    success: true,
-                    message: "Feedback Updated",
-                });
-            } else {
-                res.send({
-                    success: false,
-                    error: "Couldn't Update Feedback",
-                });
-            }
-        } catch (error) {
-            console.log(error.name.bgRed.bold, error.message.red);
+        const result = await feedbackes.insertOne(req.body);
+        if (result.insertedId) {
             res.send({
-                success: false,
-                error: error.message,
+                success: true,
+                message: "Feedback Updated",
             });
         }
     });
@@ -89,6 +63,24 @@ const fun = async () => {
         const curser = feedbackes.find(query);
         const thisFeedbackes = await curser.toArray();
         res.send(thisFeedbackes);
+    });
+    // Get Product by email
+    app.get("/feedbacksbyemail", async (req, res) => {
+        const email = req.query.email;
+        const curser = feedbackes.find({ email });
+        const feedbackesbyemail = await curser.toArray();
+        res.send(feedbackesbyemail);
+    });
+    // Delete Feedback
+    app.delete("/feedbackdelete/:id", async (req, res) => {
+        const { id } = req.params;
+        const result = await feedbackes.deleteOne({ _id: ObjectId(id) });
+        if (result.deletedCount) {
+            res.send({
+                success: true,
+                message: "Successfully deleted Feedback",
+            });
+        }
     });
 };
 fun().catch((error) => console.log(`${error.name.bgRed.bold}: ${error.message.red}`));
