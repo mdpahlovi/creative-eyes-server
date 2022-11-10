@@ -36,7 +36,6 @@ function verifyJWT(req, res, next) {
 }
 
 const fun = async () => {
-    await client.connect();
     const servicesCategories = client.db("photoGrapher-services").collection("categories");
     const reviews = client.db("photoGrapher-services").collection("reviews");
 
