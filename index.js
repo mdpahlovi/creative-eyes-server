@@ -1,5 +1,6 @@
 require("colors");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
@@ -18,8 +19,29 @@ const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@cluster
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+function verifyJWT(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).send({ message: "unauthorized access" });
+    }
+    const token = authHeader.split(" ")[1];
+    jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+        if (err) {
+            return res.status(403).send({ message: "Forbidden access" });
+        }
+        req.decoded = decoded;
+        next();
+    });
+}
+
 const fun = async () => {
     await client.connect();
+    app.post("/jwt", (req, res) => {
+        const user = req.body;
+        const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "2d" });
+        res.send({ token });
+    });
+
     const servicesCategories = client.db("photoGrapher-services").collection("categories");
     // Get Services From Server
     app.get("/services", async (req, res) => {
@@ -65,7 +87,7 @@ const fun = async () => {
         res.send(thisreviews);
     });
     // Get Product by email
-    app.get("/reviewsbyemail", async (req, res) => {
+    app.get("/reviewsbyemail", verifyJWT, async (req, res) => {
         const email = req.query.email;
         const curser = reviews.find({ email });
         const reviewsbyemail = await curser.toArray();
