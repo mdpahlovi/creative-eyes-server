@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
     res.send("Pahlovi Server Running Okk");
 });
 
-const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@cluster0.v2g7zap.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@cluster0.swudvpp.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
