@@ -47,9 +47,8 @@ const fun = async () => {
 
     // Get Services From Server
     app.get("/services", async (req, res) => {
-        const showLimit = parseInt(req.query.limit);
         const curser = servicesCategories.find({});
-        const categories = await curser.limit(showLimit).toArray();
+        const categories = await curser.toArray();
         res.send(categories);
     });
     //Get Service by id
@@ -113,7 +112,7 @@ const fun = async () => {
         const review = await reviews.findOne(query);
         res.send(review);
     });
-    app.patch("/reviewedit/:id", async (req, res) => {
+    app.patch("/reviewedit/:id", verifyJWT, async (req, res) => {
         const { id } = req.params;
         const result = await reviews.updateOne({ _id: ObjectId(id) }, { $set: req.body });
         if (result.matchedCount) {
