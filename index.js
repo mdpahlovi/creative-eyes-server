@@ -4,7 +4,8 @@ const cors = require("cors");
 const express = require("express");
 const { default: mongoose } = require("mongoose");
 const app = express();
-const userService = require("./routers/service.route");
+const useService = require("./routers/service.route");
+const useUser = require("./routers/user.route");
 
 // Middle Wire
 app.use(cors());
@@ -17,7 +18,8 @@ mongoose
     .catch(() => console.log(`Error in DB Connection`));
 
 //Route
-app.use("/services", userService);
+app.use("/user", useUser);
+app.use("/services", useService);
 
 app.get("/", (req, res) => {
     res.send("Creative Eyes Server Running");
