@@ -1,5 +1,11 @@
 const User = require("../models/user.model");
 
+exports.getUser = async (req, res) => {
+    const { email } = req.params;
+    const user = await User.findOne({ email: email });
+    res.send(user);
+};
+
 exports.getAndCreateUser = async (req, res) => {
     const user = req.body;
     const alreadyExist = await User.findOne({ email: user.email });

@@ -5,6 +5,12 @@ exports.getAllServices = async (req, res) => {
     res.send(services);
 };
 
+exports.getService = async (req, res) => {
+    const { id } = req.params;
+    const service = await Service.findById(id);
+    res.send(service);
+};
+
 exports.postServices = async (req, res) => {
     const service = req.body;
     const newService = new Service(service);

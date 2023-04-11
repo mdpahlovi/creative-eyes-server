@@ -19,7 +19,7 @@ mongoose
 
 //Route
 app.use("/user", useUser);
-app.use("/services", useService);
+app.use("/service", useService);
 
 app.get("/", (req, res) => {
     res.send("Creative Eyes Server Running");
