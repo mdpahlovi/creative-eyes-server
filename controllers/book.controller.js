@@ -1,4 +1,11 @@
 const Book = require("../models/book.model");
+const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Types;
+
+exports.getAllBookingData = async (req, res) => {
+    const bookingData = await Book.find({});
+    res.send(bookingData);
+};
 
 exports.getBookingData = async (req, res) => {
     const { id } = req.params;
@@ -7,8 +14,8 @@ exports.getBookingData = async (req, res) => {
 };
 
 exports.getUserBookingData = async (req, res) => {
-    const { userId } = req.params;
-    const bookingData = await Book.find({ userId: userId });
+    const { id } = req.params;
+    const bookingData = await Book.find({ userId: new ObjectId(id) });
     res.send(bookingData);
 };
 
