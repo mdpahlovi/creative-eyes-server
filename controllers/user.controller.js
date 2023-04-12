@@ -5,6 +5,10 @@ exports.getUser = async (req, res) => {
     const user = await User.findOne({ email: email });
     res.send(user);
 };
+exports.getAllUser = async (req, res) => {
+    const users = await User.find({});
+    res.send(users);
+};
 
 exports.getAndCreateUser = async (req, res) => {
     const user = req.body;

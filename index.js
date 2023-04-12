@@ -6,6 +6,7 @@ const { default: mongoose } = require("mongoose");
 const app = express();
 const useService = require("./routers/service.route");
 const useUser = require("./routers/user.route");
+const useBook = require("./routers/book.route");
 
 // Middle Wire
 app.use(cors());
@@ -20,6 +21,7 @@ mongoose
 //Route
 app.use("/user", useUser);
 app.use("/service", useService);
+app.use("/book", useBook);
 
 app.get("/", (req, res) => {
     res.send("Creative Eyes Server Running");
