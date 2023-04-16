@@ -8,6 +8,7 @@ const useService = require("./routers/service.route");
 const useUser = require("./routers/user.route");
 const useBook = require("./routers/book.route");
 const useMedia = require("./routers/media.route");
+const useBlog = require("./routers/blog.route");
 
 // Middle Wire
 app.use(cors());
@@ -24,6 +25,7 @@ app.use("/user", useUser);
 app.use("/service", useService);
 app.use("/book", useBook);
 app.use("/media", useMedia);
+app.use("/blog", useBlog);
 
 app.get("/", (req, res) => {
     res.send("Creative Eyes Server Running");
