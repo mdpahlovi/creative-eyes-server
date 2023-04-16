@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema.Types;
 const mediaSchema = new mongoose.Schema(
     {
         media: { image: Array, audio: Array, video: Array },
-        bookingId: { type: ObjectId, ref: "book" },
+        booking: { id: { type: ObjectId, ref: "book" }, name: String },
         userId: { type: ObjectId, ref: "user" },
     },
     { timestamps: true }

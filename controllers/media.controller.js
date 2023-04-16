@@ -2,9 +2,15 @@ const mongoose = require("mongoose");
 const Media = require("../models/media.model");
 const { ObjectId } = mongoose.Types;
 
+exports.getUserMedia = async (req, res) => {
+    const { id } = req.params;
+    const media = await Media.find({ userId: new ObjectId(id) });
+    res.send(media);
+};
+
 exports.getBookMedia = async (req, res) => {
     const { id } = req.params;
-    const media = await Media.findOne({ bookingId: new ObjectId(id) }).populate("bookingId");
+    const media = await Media.findOne({ "booking.id": new ObjectId(id) });
     res.send(media);
 };
 
