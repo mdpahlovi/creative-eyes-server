@@ -36,3 +36,19 @@ exports.updateBookMedia = async (req, res) => {
     const result = await Media.findOneAndUpdate(filter, update);
     res.send({ acknowledge: true, updatedId: result._id });
 };
+
+exports.deleteBookMedia = async (req, res) => {
+    const media = req.body;
+    const { id } = req.params;
+    const filter = { "booking.id": new ObjectId(id) };
+    const update = {
+        $pull: {
+            "media.image": { $in: media.image },
+            "media.audio": { $in: media.audio },
+            "media.video": { $in: media.video },
+        },
+    };
+
+    const result = await Media.findOneAndUpdate(filter, update);
+    res.send({ acknowledge: true, deletedId: result._id });
+};
