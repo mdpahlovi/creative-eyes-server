@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Types;
 
 exports.getAllServiceReview = async (req, res) => {
     const { id } = req.params;
-    const reviews = await Review.find({ serviceId: new ObjectId(id) }).populate("user");
+    const reviews = await Review.find({ serviceId: new ObjectId(id) }).populate("author");
     res.send(reviews);
 };
 
