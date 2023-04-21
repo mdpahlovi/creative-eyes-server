@@ -12,6 +12,7 @@ const bookSchema = new mongoose.Schema(
         service: { id: { type: ObjectId, ref: "service" }, name: String },
         isComplete: Boolean,
         isMediaUpdated: Boolean,
+        isReview: Boolean,
     },
     { timestamps: true }
 );
