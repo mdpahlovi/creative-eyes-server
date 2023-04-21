@@ -21,3 +21,8 @@ exports.getAndCreateUser = async (req, res) => {
         res.send(result);
     }
 };
+exports.updateUser = async (req, res) => {
+    const { id } = req.params;
+    const result = await User.findByIdAndUpdate(id, { $set: req.body });
+    res.send({ acknowledge: true, updatedId: result._id });
+};
